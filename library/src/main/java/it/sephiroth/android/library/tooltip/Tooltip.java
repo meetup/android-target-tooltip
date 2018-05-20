@@ -568,11 +568,16 @@ public final class Tooltip {
 
         void removeFromParent() {
             log(TAG, INFO, "[%d] removeFromParent", mToolTipId);
-            ViewParent parent = getParent();
+            final ViewParent parent = getParent();
             removeCallbacks();
 
             if (null != parent) {
-                ((ViewGroup) parent).removeView(TooltipViewImpl.this);
+                ((ViewGroup) parent).post(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((ViewGroup) parent).removeView(TooltipViewImpl.this);
+                    }
+                });
 
                 if (null != mShowAnimation && mShowAnimation.isStarted()) {
                     mShowAnimation.cancel();
@@ -972,7 +977,9 @@ public final class Tooltip {
 
             if (mViewRect == null) {
                 mViewRect = new Rect();
-                mViewRect.set(mPoint.x, mPoint.y + statusbarHeight, mPoint.x, mPoint.y + statusbarHeight);
+                if (mPoint != null) {
+                    mViewRect.set(mPoint.x, mPoint.y + statusbarHeight, mPoint.x, mPoint.y + statusbarHeight);
+                }
             }
 
             final int screenTop = mScreenRect.top + mTopRule;
