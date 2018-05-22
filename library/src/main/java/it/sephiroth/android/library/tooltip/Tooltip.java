@@ -246,6 +246,7 @@ public final class Tooltip {
         private final Point mPoint;
         private final int mTextResId;
         private final int mTopRule;
+        private final int minTop;
         private final int mMaxWidth;
         private final boolean mHideArrow;
         private final long mActivateDelay;
@@ -330,6 +331,12 @@ public final class Tooltip {
 
                         if (mOldLocation == null) {
                             mOldLocation = new int[]{mTempLocation[0], mTempLocation[1]};
+                        }
+
+                        if (mTempLocation[1] < minTop && mView.getVisibility() == VISIBLE) {
+                            mView.setVisibility(INVISIBLE);
+                        } else if (mTempLocation[1] >= minTop && mView.getVisibility() == INVISIBLE) {
+                            mView.setVisibility(VISIBLE);
                         }
 
                         if (mOldLocation[0] != mTempLocation[0] || mOldLocation[1] != mTempLocation[1]) {
@@ -418,6 +425,7 @@ public final class Tooltip {
             this.mTextResId = builder.textResId;
             this.mMaxWidth = builder.maxWidth;
             this.mTopRule = builder.actionbarSize;
+            this.minTop = builder.minTop;
             this.mClosePolicy = builder.closePolicy;
             this.mShowDuration = builder.showDuration;
             this.mShowDelay = builder.showDelay;
@@ -1466,6 +1474,7 @@ public final class Tooltip {
         View view;
         Gravity gravity;
         int actionbarSize = 0;
+        int minTop = 0;
         int textResId = R.layout.tooltip_textview;
         int closePolicy = ClosePolicy.NONE;
         long showDuration;
@@ -1636,6 +1645,28 @@ public final class Tooltip {
         public Builder actionBarSize(final int actionBarSize) {
             throwIfCompleted();
             this.actionbarSize = actionBarSize;
+            return this;
+        }
+
+        /**
+         * Hide the tooltip if the vertical location of the anchor view is at less than a given dimen.
+         *
+         * This can be used to prevent the tooltip from overlapping with the toolbar
+         */
+        @SuppressWarnings ("unused")
+        public Builder minTop(Resources resources, int resId) {
+            return minTop(resources.getDimensionPixelSize(resId));
+        }
+
+        /**
+         * Hide the tooltip if the vertical location of the anchor view is at less than a given number in pixel.
+         *
+         * This can be used to prevent the tooltip from overlapping with the toolbar
+         */
+        @SuppressWarnings ("unused")
+        public Builder minTop(final int minTop) {
+            throwIfCompleted();
+            this.minTop = minTop;
             return this;
         }
 
