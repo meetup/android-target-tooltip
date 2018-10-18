@@ -130,7 +130,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-            ((TextView) holder.itemView.findViewById(android.R.id.text1)).setText(mData.get(position));
+            ((TextView) holder.itemView.findViewById(R.id.tooltipTextView)).setText(mData.get(position));
 
             if (position == LIST_POSITION) {
                 showTooltip(holder);
@@ -157,7 +157,7 @@ public class MainActivity3 extends AppCompatActivity implements AdapterView.OnIt
                 MainActivity3.this,
                 new Tooltip.Builder(TOOLTIP_ID)
                     .maxWidth((int) (displayMetrics.widthPixels / 2))
-                    .anchor(holder.itemView.findViewById(android.R.id.text1), Tooltip.Gravity.RIGHT)
+                    .anchor(holder.itemView.findViewById(R.id.tooltipTextView), Tooltip.Gravity.RIGHT)
                     .closePolicy(Tooltip.ClosePolicy.TOUCH_INSIDE_NO_CONSUME, 0)
                     .text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc lacinia sem non neque commodo consectetur")
                     .fitToScreen(false)

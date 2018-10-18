@@ -20,6 +20,7 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.widget.TextViewCompat;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -802,7 +803,7 @@ public final class Tooltip {
             mView = LayoutInflater.from(getContext()).inflate(mTextResId, this, false);
             mView.setLayoutParams(params);
 
-            mTextView = (TextView) mView.findViewById(android.R.id.text1);
+            mTextView = mView.findViewById(R.id.tooltipTextView);
             mTextView.setText(Html.fromHtml((String) this.mText));
             if (mMaxWidth > -1) {
                 mTextView.setMaxWidth(mMaxWidth);
@@ -810,7 +811,7 @@ public final class Tooltip {
             }
 
             if (0 != mTextAppearance) {
-                mTextView.setTextAppearance(getContext(), mTextAppearance);
+                TextViewCompat.setTextAppearance(mTextView, mTextAppearance);
             }
 
             mTextView.setGravity(mTextGravity);
@@ -1517,7 +1518,7 @@ public final class Tooltip {
 
         /**
          * Use a custom View for the tooltip. Note that the custom view
-         * must include a TextView which id is `@android:id/text1`.<br />
+         * must include a TextView which id is `@id/tooltipTextView`.<br />
          * Moreover, when using a custom view, the anchor arrow will not be shown
          *
          * @param resId             the custom layout view.
